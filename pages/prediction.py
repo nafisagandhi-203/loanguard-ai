@@ -491,7 +491,8 @@ if st.session_state.base_probability is not None:
     # 4. Interactive What-If Simulation Playground (Uses Currently Selected Model!)
     st.markdown(f"<div class='section-header'>What-If Risk Simulation Playground ({active_model_name})</div>", unsafe_allow_html=True)
     st.write(
-        f"Adjust the continuous financial levers below to simulate real-time risk changes using the active **{active_model_name}** model:"
+        f"Adjust the continuous financial levers below to simulate real-time risk changes using the active **{active_model_name}** model. "
+        "Drag any slider — the panel on the right recalculates instantly. It starts at the assessed risk above."
     )
     
     sim_col1, sim_col2 = st.columns([3, 2])
@@ -568,7 +569,11 @@ if st.session_state.base_probability is not None:
             diff_text = f"Increased by {prob_diff:.2f} percentage points 🔴"
         else:
             diff_color = "#64748B"
-            diff_text = "No material change"
+            diff_text = (
+                "Baseline — drag a slider to compare"
+                if abs(prob_diff) < 1e-9
+                else "No material change"
+            )
             
         st.markdown(
             f"""
@@ -584,8 +589,16 @@ if st.session_state.base_probability is not None:
                 <div style="font-size: 3.25rem; font-weight: 800; color: {risk_color if abs(prob_diff) < 0.1 else ('#10B981' if prob_diff < 0 else '#EF4444')}; line-height: 1; margin-bottom: 5px;">
                     {sim_prob_pct:.1f}%
                 </div>
-                <div style="font-size: 0.85rem; font-weight: 700; color: #FFFFFF; margin-bottom: 25px;">
+                <div style="font-size: 0.85rem; font-weight: 700; color: #FFFFFF; margin-bottom: 15px;">
                     {"LIKELY DEFAULT (1)" if sim_prob_pct > 50 else "UNLIKELY DEFAULT (0)"}
+                </div>
+                
+                <div style="border-top: 1px solid #1E293B; padding-top: 12px; margin-bottom: 10px;">
+                    <div style="font-size: 0.7rem; color: #64748B; letter-spacing: 0.03em; margin-bottom: 4px;">ACTIVE LEVERS</div>
+                    <div style="font-size: 0.72rem; color: #94A3B8; line-height: 1.45;">
+                        Credit {sim_credit} · DTI {sim_dti:.2f} · Rate {sim_rate:.1f}%<br>
+                        Income ${sim_income:,.0f} · Loan ${sim_loan:,.0f}
+                    </div>
                 </div>
                 
                 <div style="border-top: 1px solid #1E293B; padding-top: 15px;">
