@@ -1,8 +1,5 @@
 import streamlit as st
-import pandas as pd
-import numpy as np
 import time
-import os
 import plotly.graph_objects as go
 from utils.preprocessing import preprocess_input
 from utils.prediction import predict_loan_risk, get_supported_models, load_all_model_metrics
@@ -294,99 +291,63 @@ with st.form("loan_assessment_form"):
 
 # Handle Form Execution
 if submit_btn:
-    # 1. Inputs validation
-    validation_passed = True
-    errors = []
+    # 1. Sequential Loading Animation
+    status_placeholder = st.empty()
     
-    if age < 18 or age > 100:
-        validation_passed = False
-        errors.append("Please enter a valid age between 18 and 100.")
-    if credit_score < 300 or credit_score > 850:
-        validation_passed = False
-        errors.append("Please enter a valid credit score between 300 and 850.")
-    if income <= 0:
-        validation_passed = False
-        errors.append("Annual Income must be a positive number.")
-    if loan_amount <= 0:
-        validation_passed = False
-        errors.append("Loan Amount must be a positive number.")
-    if interest_rate <= 0 or interest_rate > 50:
-        validation_passed = False
-        errors.append("Interest Rate must be a positive percentage (0 - 50%).")
-    if loan_term <= 0:
-        validation_passed = False
-        errors.append("Loan Term must be a positive number of months.")
-    if months_employed < 0:
-        validation_passed = False
-        errors.append("Months Employed cannot be negative.")
-    if num_credit_lines < 0:
-        validation_passed = False
-        errors.append("Number of Credit Lines cannot be negative.")
-    if dti_ratio < 0 or dti_ratio > 1.0:
-        validation_passed = False
-        errors.append("DTI Ratio must be between 0.00 and 1.00 (e.g. 0.35 represents 35%).")
-
-    if not validation_passed:
-        for err in errors:
-            st.error(err)
-    else:
-        # 2. Sequential Loading Animation
-        status_placeholder = st.empty()
+    with status_placeholder.container():
+        st.markdown(
+            f"""
+            <div style="background-color: #E0F2FE; border-left: 4px solid #0284C7; padding: 15px; border-radius: 4px; color: #0369A1; font-weight: 600; margin-bottom: 20px;">
+                🔄 Analyzing loan application with {chosen_meta['name']}...
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+        time.sleep(0.4)
+        st.markdown(
+            f"""
+            <div style="background-color: #E0F2FE; border-left: 4px solid #0284C7; padding: 15px; border-radius: 4px; color: #0369A1; font-weight: 600; margin-bottom: 20px;">
+                🛡️ Computing default probability & risk tiers...
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+        time.sleep(0.4)
+        st.markdown(
+            """
+            <div style="background-color: #E2F0D9; border-left: 4px solid #385723; padding: 15px; border-radius: 4px; color: #385723; font-weight: 600; margin-bottom: 20px;">
+                📈 Generating credit risk assessment card...
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+        time.sleep(0.3)
         
-        with status_placeholder.container():
-            st.markdown(
-                f"""
-                <div style="background-color: #E0F2FE; border-left: 4px solid #0284C7; padding: 15px; border-radius: 4px; color: #0369A1; font-weight: 600; margin-bottom: 20px;">
-                    🔄 Analyzing loan application with {chosen_meta['name']}...
-                </div>
-                """,
-                unsafe_allow_html=True
-            )
-            time.sleep(0.4)
-            st.markdown(
-                f"""
-                <div style="background-color: #E0F2FE; border-left: 4px solid #0284C7; padding: 15px; border-radius: 4px; color: #0369A1; font-weight: 600; margin-bottom: 20px;">
-                    🛡️ Computing default probability & risk tiers...
-                </div>
-                """,
-                unsafe_allow_html=True
-            )
-            time.sleep(0.4)
-            st.markdown(
-                """
-                <div style="background-color: #E2F0D9; border-left: 4px solid #385723; padding: 15px; border-radius: 4px; color: #385723; font-weight: 600; margin-bottom: 20px;">
-                    📈 Generating credit risk assessment card...
-                </div>
-                """,
-                unsafe_allow_html=True
-            )
-            time.sleep(0.3)
-            
-        status_placeholder.empty()
+    status_placeholder.empty()
+    
+    # 2. Model Inference via Backend Module
+    raw_inputs = {
+        "age": age, "income": income, "loanamount": loan_amount, "creditscore": credit_score,
+        "monthsemployed": months_employed, "numcreditlines": num_credit_lines, "interestrate": interest_rate,
+        "loanterm": loan_term, "dtiratio": dti_ratio, "education": education,
+        "employmenttype": employment_type, "maritalstatus": marital_status, "hasmortgage": has_mortgage,
+        "hasdependents": has_dependents, "loanpurpose": loan_purpose, "hascosigner": has_cosigner
+    }
+    
+    try:
+        preprocessed_df = preprocess_input(raw_inputs)
+        result = predict_loan_risk(preprocessed_df, model_key=chosen_model_key)
         
-        # 3. Model Inference via Backend Module
-        raw_inputs = {
-            "age": age, "income": income, "loanamount": loan_amount, "creditscore": credit_score,
-            "monthsemployed": months_employed, "numcreditlines": num_credit_lines, "interestrate": interest_rate,
-            "loanterm": loan_term, "dtiratio": dti_ratio, "education": education,
-            "employmenttype": employment_type, "maritalstatus": marital_status, "hasmortgage": has_mortgage,
-            "hasdependents": has_dependents, "loanpurpose": loan_purpose, "hascosigner": has_cosigner
-        }
+        # Store in session state
+        st.session_state.form_inputs = raw_inputs
+        st.session_state.base_probability = result["default_probability"]
+        st.session_state.base_prediction = result["prediction"]
+        st.session_state.model_used_name = result["model_name"]
+        st.session_state.selected_model = result["model"]
+        st.session_state.risk_level = result["risk_level"]
         
-        try:
-            preprocessed_df = preprocess_input(raw_inputs)
-            result = predict_loan_risk(preprocessed_df, model_key=chosen_model_key)
-            
-            # Store in session state
-            st.session_state.form_inputs = raw_inputs
-            st.session_state.base_probability = result["default_probability"]
-            st.session_state.base_prediction = result["prediction"]
-            st.session_state.model_used_name = result["model_name"]
-            st.session_state.selected_model = result["model"]
-            st.session_state.risk_level = result["risk_level"]
-            
-        except Exception as e:
-            st.error(f"Prediction service encountered an issue: {e}")
+    except Exception as e:
+        st.error(f"Prediction service encountered an issue: {e}")
 
 # --- RESULT DISPLAY & SIMULATION PLAYGROUND ---
 if st.session_state.base_probability is not None:

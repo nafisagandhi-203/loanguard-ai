@@ -1,26 +1,9 @@
 import streamlit as st
 import pandas as pd
-import os
+from utils.data import load_dataset
 
 st.markdown("<h1 style='margin-bottom: 0;'>About the Project</h1>", unsafe_allow_html=True)
 st.markdown("<p style='color: #64748B; font-size: 1.05rem; margin-bottom: 25px;'>Technical portfolio, workflow architecture, and dataset exploration.</p>", unsafe_allow_html=True)
-
-# Custom dataset path resolution (handles root and 'ipynb files/' paths)
-def get_dataset_path():
-    current_dir = os.path.dirname(os.path.abspath(__file__))
-    project_root = os.path.dirname(current_dir)
-    
-    possible_paths = [
-        os.path.join(project_root, "Loan_default.csv"),
-        os.path.join(project_root, "Loan_Default.csv"),
-        os.path.join(project_root, "ipynb files", "Loan_default.csv"),
-        os.path.join(project_root, "ipynb files", "Loan_Default.csv"),
-    ]
-    
-    for path in possible_paths:
-        if os.path.exists(path):
-            return path
-    return None
 
 # --- HOW IT WORKS TIMELINE FLOWCHART ---
 st.markdown("<div class='section-header'>How LoanGuard AI Works</div>", unsafe_allow_html=True)
@@ -160,15 +143,7 @@ with col_spec2:
 # --- DATASET EXPLORER ---
 st.markdown("<div class='section-header'>Historical Dataset Explorer</div>", unsafe_allow_html=True)
 
-df_exp = load_explorer_data() if 'load_explorer_data' in locals() else None
-# If not loaded, call cache function
-if df_exp is None:
-    data_path = get_dataset_path()
-    if data_path:
-        try:
-            df_exp = pd.read_csv(data_path)
-        except Exception as e:
-            st.error(f"Explorer failed to load data: {e}")
+df_exp = load_dataset()
 
 if df_exp is not None:
     st.write("Browse and filter records from the historical loan application database below:")

@@ -1,12 +1,10 @@
 import streamlit as st
-import json
-import os
+import pandas as pd
 import plotly.graph_objects as go
+from utils.data import load_model_metrics
 
 st.markdown("<h1 style='margin-bottom: 0;'>Model Insights</h1>", unsafe_allow_html=True)
 st.markdown("<p style='color: #64748B; font-size: 1.05rem; margin-bottom: 25px;'>Understand the algorithm, preprocessing pipeline, and validation performance.</p>", unsafe_allow_html=True)
-
-metrics_path = "model/metrics.json"
 
 # --- MODEL PIPELINE ---
 st.markdown("<div class='section-header'>Machine Learning Pipeline</div>", unsafe_allow_html=True)
@@ -149,11 +147,11 @@ with formula_col2:
 # --- PERFORMANCE METRICS ---
 st.markdown("<div class='section-header'>Model Evaluation Metrics</div>", unsafe_allow_html=True)
 
-if not os.path.exists(metrics_path):
+metrics = load_model_metrics()
+
+if metrics is None:
     st.warning("Performance metrics file not found. Run model training first.")
 else:
-    with open(metrics_path, "r") as f:
-        metrics = json.load(f)
         
     acc = metrics.get("accuracy", 0.0) * 100
     prec = metrics.get("precision", 0.0) * 100

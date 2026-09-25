@@ -2,38 +2,9 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
-import os
+from utils.data import load_dataset
 
-# Custom dataset path resolution (handles root and 'ipynb files/' paths)
-def get_dataset_path():
-    current_dir = os.path.dirname(os.path.abspath(__file__))
-    project_root = os.path.dirname(current_dir)
-    
-    possible_paths = [
-        os.path.join(project_root, "Loan_default.csv"),
-        os.path.join(project_root, "Loan_Default.csv"),
-        os.path.join(project_root, "ipynb files", "Loan_default.csv"),
-        os.path.join(project_root, "ipynb files", "Loan_Default.csv"),
-    ]
-    
-    for path in possible_paths:
-        if os.path.exists(path):
-            return path
-    return None
-
-# Load dataset with cache
-@st.cache_data
-def load_data():
-    data_path = get_dataset_path()
-    if data_path:
-        try:
-            return pd.read_csv(data_path)
-        except Exception as e:
-            st.error(f"Error loading dataset: {e}")
-            return None
-    return None
-
-df = load_data()
+df = load_dataset()
 
 # --- HERO SECTION ---
 hero_col1, hero_col2 = st.columns([3, 2])
@@ -115,14 +86,24 @@ def render_kpi(title, value, support, card_type="primary", icon="📊"):
         unsafe_allow_html=True
     )
 
+# Derive KPIs from the live dataset when available (falls back to last-known values)
+if df is not None:
+    total_applications = f"{len(df):,}"
+    default_cases = f"{int(df['Default'].sum()):,}"
+    default_rate_pct = float(df['Default'].mean() * 100)
+else:
+    total_applications = "255,347"
+    default_cases = "29,653"
+    default_rate_pct = 11.61
+
 kpi_col1, kpi_col2, kpi_col3, kpi_col4 = st.columns(4)
 
 with kpi_col1:
-    render_kpi("Total Applications", "255,347", "↑ Historical Dataset", "primary", "📄")
+    render_kpi("Total Applications", total_applications, "↑ Historical Dataset", "primary", "📄")
 with kpi_col2:
-    render_kpi("Default Cases", "29,653", "↓ Historical Default Cases", "danger", "⚠️")
+    render_kpi("Default Cases", default_cases, "↓ Historical Default Cases", "danger", "⚠️")
 with kpi_col3:
-    render_kpi("Default Rate", "11.61%", "⚙️ Dataset Default Ratio", "warning", "📈")
+    render_kpi("Default Rate", f"{default_rate_pct:.2f}%", "⚙️ Dataset Default Ratio", "warning", "📈")
 with kpi_col4:
     render_kpi("Model Status", "Logistic Reg.", "● Preprocessors Loaded", "success", "⚙️")
 
@@ -185,7 +166,10 @@ if df is not None:
     with chart_col1:
         default_counts = df['Default'].value_counts().reset_index()
         default_counts.columns = ['Status', 'Count']
-        default_counts['Status'] = default_counts['Status'].map({0: 'No Default (88.39%)', 1: 'Default (11.61%)'})
+        default_counts['Status'] = default_counts['Status'].map({
+            0: f'No Default ({100 - default_rate_pct:.2f}%)',
+            1: f'Default ({default_rate_pct:.2f}%)'
+        })
         
         fig_donut = px.pie(
             default_counts, 
@@ -194,8 +178,8 @@ if df is not None:
             hole=0.6,
             color='Status',
             color_discrete_map={
-                'No Default (88.39%)': '#10B981',
-                'Default (11.61%)': '#EF4444'
+                f'No Default ({100 - default_rate_pct:.2f}%)': '#10B981',
+                f'Default ({default_rate_pct:.2f}%)': '#EF4444'
             },
             title="Historical Default Distribution"
         )

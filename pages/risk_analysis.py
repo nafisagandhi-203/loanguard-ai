@@ -1,24 +1,19 @@
 import streamlit as st
-import json
-import os
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
+from utils.data import load_model_metrics
 
-# Set page titles
 st.markdown("<h1 style='margin-bottom: 0;'>Risk Intelligence</h1>", unsafe_allow_html=True)
 st.markdown("<p style='color: #64748B; font-size: 1.05rem; margin-bottom: 25px;'>Explore how the trained Logistic Regression model associates input features with default risk.</p>", unsafe_allow_html=True)
 
-# Path to serialized model metrics
-metrics_path = "model/metrics.json"
+# Load the serialized model coefficients & metrics
+metrics = load_model_metrics()
 
-if not os.path.exists(metrics_path):
+if metrics is None:
     st.warning("Model metrics file not found. Please run model training first to populate the coefficients.")
 else:
     # 1. Load trained coefficients
-    with open(metrics_path, "r") as f:
-        metrics = json.load(f)
-        
     coefficients = metrics.get("coefficients", {})
     
     st.markdown("<div class='section-header'>Logistic Regression Model Coefficients</div>", unsafe_allow_html=True)
