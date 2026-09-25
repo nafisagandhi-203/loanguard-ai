@@ -114,8 +114,8 @@ with col_spec1:
         <div style="background-color: #FFFFFF; border: 1px solid #E2E8F0; padding: 20px; border-radius: 6px; box-shadow: 0 1px 3px rgba(0,0,0,0.02); margin-bottom: 20px; min-height: 200px;">
             <h3 style="margin-top: 0; color: #0A2540; font-size: 1.15rem;">🚀 Future Scope</h3>
             <ul style="padding-left: 18px; margin: 0; color: #475569; font-size: 0.85rem; line-height: 1.6;">
-                <li><strong>Class Balancing:</strong> Incorporate SMOTE or focal loss weights to improve model recall on default predictions.</li>
-                <li><strong>Ensemble Models:</strong> Deploy XGBoost or Random Forests for non-linear feature boundary classification.</li>
+                <li><strong>Class Balancing:</strong> Class-weighted training &amp; F1-optimized decision thresholds lift default recall from ~3% to ~50% across all models.</li>
+                <li><strong>Ensemble Models:</strong> Random Forest, AdaBoost, and Gradient Boosting are deployed alongside Logistic Regression for non-linear boundary classification.</li>
                 <li><strong>Explainable AI (XAI):</strong> Integrate SHAP/LIME tools to provide detailed explanations for individual predictions.</li>
             </ul>
         </div>

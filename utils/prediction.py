@@ -97,6 +97,23 @@ def calculate_risk_level(default_prob):
     else:
         return "High"
 
+
+@st.cache_data
+def get_decision_threshold(model_key="logistic_regression"):
+    """
+    Returns the tuned decision threshold for a model (from training metrics).
+    The threshold was optimized to maximize F1 on a validation slice, so a
+    probability above it counts as a predicted default. Falls back to 0.5.
+    """
+    try:
+        metrics = load_all_model_metrics()
+        model = metrics.get(model_key, {})
+        if isinstance(model, dict) and "decision_threshold" in model:
+            return float(model["decision_threshold"])
+    except Exception:
+        pass
+    return 0.5
+
 def predict_loan_risk(preprocessed_df, model_key="logistic_regression"):
     """
     Passes preprocessed features to the selected trained ML model
@@ -108,20 +125,23 @@ def predict_loan_risk(preprocessed_df, model_key="logistic_regression"):
         
     model = load_model(model_key)
     meta = MODEL_MAP[model_key]
-    
-    # 1. Prediction class
-    predicted_class = int(model.predict(preprocessed_df)[0])
-    
+
+    # 1. Deterministic class from tuned decision threshold (matches reported metrics)
+    threshold = get_decision_threshold(model_key)
+    default_prob = None
+
     # 2. Probability extraction
     if hasattr(model, "predict_proba"):
         probabilities = model.predict_proba(preprocessed_df)[0]
         no_default_prob = float(probabilities[0])
         default_prob = float(probabilities[1])
     else:
-        default_prob = float(predicted_class)
+        default_prob = float(model.predict(preprocessed_df)[0])
         no_default_prob = 1.0 - default_prob
-        
-    # 3. Derive risk tier
+
+    predicted_class = int(default_prob >= threshold)
+
+    # 3. Derive risk tier (probability-based, independent of decision threshold)
     risk_level = calculate_risk_level(default_prob)
     
     return {
@@ -132,5 +152,6 @@ def predict_loan_risk(preprocessed_df, model_key="logistic_regression"):
         "prediction_label": "Default" if predicted_class == 1 else "No Default",
         "default_probability": default_prob,
         "no_default_probability": no_default_prob,
-        "risk_level": risk_level
+        "risk_level": risk_level,
+        "decision_threshold": threshold
     }

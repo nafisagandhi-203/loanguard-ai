@@ -172,11 +172,13 @@ else:
     with m_col5:
         st.metric("ROC-AUC", f"{roc_auc:.4f}")
         
+    decision_th = metrics.get("decision_threshold", 0.5)
     st.markdown(
-        """
+        f"""
         <div style="font-size: 0.82rem; color: #64748B; margin-bottom: 25px;">
-            *Note: Metrics calculated on validation split partition (20% of dataset, 51,070 records). 
-            Given dataset default rate is 11.61%, recall is low (3.12%), representing high default-profile conservatism.
+            *Note: Metrics calculated on the 20% holdout split (51,070 records). Because the dataset is imbalanced 
+            (11.61% default rate), models were trained with class balancing and each decision threshold was tuned to 
+            maximize F1 on a validation slice (Logistic Regression operating threshold ≈ {decision_th*100:.1f}%).
         </div>
         """,
         unsafe_allow_html=True
@@ -302,13 +304,23 @@ else:
         
         st.plotly_chart(fig_comp, width="stretch", config={'displayModeBar': False})
         
+        best_key = max(models_metrics, key=lambda k: models_metrics[k].get("f1_score", 0))
+        best_m = models_metrics[best_key]
+        best_name = best_m.get("name", best_key)
+        best_cv = best_m.get("cv_std", 0) * 100
+        best_auc = best_m.get("roc_auc", 0)
+        best_rec = best_m.get("recall", 0) * 100
+        best_th = best_m.get("decision_threshold", 0.5) * 100
+
         st.markdown(
-            """
+            f"""
             <div style="background-color: #F8FAFC; border: 1px solid #CBD5E1; border-left: 4px solid #10B981; padding: 16px 20px; border-radius: 6px; margin-top: 15px; font-size: 0.88rem; color: #1E293B; line-height: 1.6;">
                 <strong>🏆 Best Model Selection Rationale:</strong><br>
-                <strong>Gradient Boosting</strong> achieved the highest overall <strong>ROC-AUC (0.7571)</strong>, the highest overall <strong>Accuracy (88.63%)</strong>, 
-                and the highest <strong>Default Detection Recall (5.06%)</strong>—more than doubling the baseline Logistic Regression recall. 
-                With an extremely low cross-validation spread of <strong>±0.03%</strong> across 5 folds, it provides the most dependable, risk-sensitive credit evaluation in production.
+                <strong>{best_name}</strong> reached the highest <strong>F1-Score ({best_m.get('f1_score', 0)*100:.2f}%)</strong> while catching 
+                <strong>{best_rec:.2f}%</strong> of actual defaults at its tuned decision threshold of <strong>{best_th:.1f}%</strong> — a 
+                dramatic improvement over an un-adjusted 0.5 cutoff, which only caught ~3% of defaults. With a cross-validation 
+                spread of <strong>±{best_cv:.2f}%</strong> across 5 folds and <strong>ROC-AUC {best_auc:.4f}</strong>, it provides the most 
+                dependable, risk-sensitive credit evaluation in production.
             </div>
             """,
             unsafe_allow_html=True

@@ -2,7 +2,7 @@ import streamlit as st
 import time
 import plotly.graph_objects as go
 from utils.preprocessing import preprocess_input
-from utils.prediction import predict_loan_risk, get_supported_models, load_all_model_metrics
+from utils.prediction import predict_loan_risk, get_supported_models, load_all_model_metrics, get_decision_threshold
 
 # Custom styling for prediction page
 st.markdown("<h1 style='margin-bottom: 0;'>Loan Risk Assessment</h1>", unsafe_allow_html=True)
@@ -559,6 +559,7 @@ if st.session_state.base_probability is not None:
     with sim_col2:
         # Comparison indicator display
         prob_diff = sim_prob_pct - base_prob_pct
+        sim_threshold_pct = get_decision_threshold(st.session_state.selected_model) * 100
         
         # Determine colors and text based on diff
         if prob_diff < -0.05:
@@ -590,7 +591,7 @@ if st.session_state.base_probability is not None:
         {sim_prob_pct:.1f}%
     </div>
     <div style="font-size: 0.85rem; font-weight: 700; color: #FFFFFF; margin-bottom: 15px;">
-        {"LIKELY DEFAULT (1)" if sim_prob_pct > 50 else "UNLIKELY DEFAULT (0)"}
+        {"LIKELY DEFAULT (1)" if sim_prob_pct >= sim_threshold_pct else "UNLIKELY DEFAULT (0)"}
     </div>
 
     <div style="border-top: 1px solid #1E293B; padding-top: 12px; margin-bottom: 10px;">

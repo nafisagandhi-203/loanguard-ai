@@ -116,12 +116,14 @@ If it doesn't open automatically, navigate to `http://localhost:8501` in your br
 
 ## Model Performance Summary
 
-- **Accuracy**: 88.59%
-- **Precision**: 62.16%
-- **Recall**: 3.12%
-- **ROC-AUC**: 0.7498
-- **Confusion Matrix**:
-  - True Negatives (TN): 45,058
-  - False Positives (FP): 112
-  - False Negatives (FN): 5,716
-  - True Positives (TP): 184
+> Metrics below are computed on the 20% holdout split (51,070 records) at each model's **tuned decision threshold**.
+> Because only 11.61% of loans default, models are trained with **class balancing** (inverse-frequency weights /
+> `class_weight='balanced'`) and each threshold is optimized to maximize F1 on a validation slice — so the models
+> actually detect defaults instead of just predicting "No Default" for everyone (a naive model already scores 88.4%).
+
+| Model | Decision Threshold | Accuracy | Recall (Default) | Precision (Default) | F1 | ROC-AUC | PR-AUC |
+|---|---|---|---|---|---|---|---|
+| Logistic Regression | ≈62.5% | 79.69% | 49.32% | 28.43% | 36.06% | 0.7498 | 0.3046 |
+| Random Forest | ≈52.5% | 79.34% | 50.14% | 28.15% | 36.06% | 0.7511 | 0.3172 |
+| AdaBoost | ≈55.0% | 77.94% | 54.00% | 27.28% | 36.25% | 0.7517 | 0.3167 |
+| Gradient Boosting | ≈62.5% | 81.09% | 48.37% | 30.31% | 37.27% | 0.7576 | 0.3306 |
