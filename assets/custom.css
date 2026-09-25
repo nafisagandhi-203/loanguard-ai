@@ -1,0 +1,424 @@
+/* LoanGuard AI Fintech Styling Theme */
+
+/* Modern corporate colors and typography */
+body {
+    background-color: #F4F6F9;
+    color: #1E293B;
+    font-family: 'Inter', sans-serif;
+}
+
+/* Custom Top Navigation Banner simulation */
+.top-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #FFFFFF;
+    border-bottom: 1px solid #E2E8F0;
+    padding: 10px 25px;
+    margin: -6rem -4rem 2rem -4rem; /* Outsets container margins to header boundary */
+    box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+}
+
+.top-nav-brand {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #0A2540;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.top-nav-info {
+    font-size: 0.85rem;
+    color: #64748B;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+/* Hero Section style card */
+.hero-card {
+    background: #0A192F; /* Midnight banking navy */
+    color: #FFFFFF;
+    border-radius: 8px;
+    padding: 2.5rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 10px 25px -5px rgba(10, 25, 47, 0.3), 0 8px 10px -6px rgba(10, 25, 47, 0.3);
+    position: relative;
+    overflow: hidden;
+    border-left: 5px solid #00D2FF; /* Electric blue left accent border */
+}
+
+.hero-title {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: #FFFFFF;
+    margin-bottom: 0.2rem;
+}
+
+.hero-tagline {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #00D2FF; /* Electric blue */
+    margin-bottom: 1rem;
+}
+
+.hero-desc {
+    font-size: 0.95rem;
+    color: #94A3B8;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+    max-width: 70%;
+}
+
+/* Visually distinctive metric card structures */
+.kpi-card {
+    background-color: #FFFFFF;
+    border: 1px solid #E2E8F0;
+    border-radius: 6px;
+    padding: 1.25rem;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px 0 rgba(0, 0, 0, 0.03);
+    margin-bottom: 1rem;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    border-top: 4px solid #0A2540;
+}
+
+.kpi-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.03);
+    border-top-color: #00D2FF;
+}
+
+.kpi-card-title {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #64748B;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 0.4rem;
+}
+
+.kpi-card-value {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #0A2540;
+    margin-bottom: 0.2rem;
+}
+
+.kpi-card-support {
+    font-size: 0.76rem;
+    color: #94A3B8;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.kpi-card-primary { border-top-color: #0A2540; }
+.kpi-card-success { border-top-color: #10B981; }
+.kpi-card-danger { border-top-color: #EF4444; }
+.kpi-card-warning { border-top-color: #F59E0B; }
+
+/* Custom section headers */
+.section-header {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #0A2540;
+    border-bottom: 2px solid #E2E8F0;
+    padding-bottom: 0.5rem;
+    margin-top: 2rem;
+    margin-bottom: 1.25rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+/* Guided Loan Assessment Wizard progress stepper */
+.step-progress {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #FFFFFF;
+    border: 1px solid #E2E8F0;
+    border-radius: 8px;
+    padding: 15px 25px;
+    margin-bottom: 2rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+}
+
+.step-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: #94A3B8;
+}
+
+.step-item.active {
+    color: #0A2540;
+    font-weight: 700;
+}
+
+.step-item.active .step-num {
+    background-color: #0A2540;
+    color: #FFFFFF;
+}
+
+.step-num {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background-color: #E2E8F0;
+    color: #64748B;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.76rem;
+    font-weight: 700;
+}
+
+.step-arrow {
+    color: #CBD5E1;
+    font-size: 1.1rem;
+}
+
+/* Card Containers for Form Sections */
+.form-section-card {
+    background-color: #FFFFFF;
+    border: 1px solid #E2E8F0;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+}
+
+.form-section-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #0A2540;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-bottom: 1px solid #F1F5F9;
+    padding-bottom: 8px;
+}
+
+/* Custom helper microcopy styling */
+.field-microcopy {
+    font-size: 0.74rem;
+    color: #64748B;
+    margin-top: -8px;
+    margin-bottom: 8px;
+    font-style: italic;
+}
+
+/* Advanced Result Output Cards */
+.result-container {
+    background-color: #FFFFFF;
+    border: 1px solid #E2E8F0;
+    border-radius: 8px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    border-left: 6px solid #CBD5E1;
+}
+
+.result-container.low-risk {
+    border-left-color: #10B981;
+    background: linear-gradient(90deg, #F0FDF4 0%, #FFFFFF 100%);
+}
+
+.result-container.medium-risk {
+    border-left-color: #F59E0B;
+    background: linear-gradient(90deg, #FFFBEB 0%, #FFFFFF 100%);
+}
+
+.result-container.high-risk {
+    border-left-color: #EF4444;
+    background: linear-gradient(90deg, #FEF2F2 0%, #FFFFFF 100%);
+}
+
+.result-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 9999px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.75rem;
+}
+
+.badge-low { background-color: #D1FAE5; color: #065F46; }
+.badge-medium { background-color: #FEF3C7; color: #92400E; }
+.badge-high { background-color: #FEE2E2; color: #991B1B; }
+
+.result-status-title {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #0A2540;
+    margin-bottom: 0.5rem;
+}
+
+.result-status-desc {
+    font-size: 0.95rem;
+    color: #475569;
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+}
+
+/* Sidebar Overrides for Dark Banking Theme */
+[data-testid="stSidebar"] {
+    background-color: #0B192C !important; /* Midnight dark blue */
+}
+
+[data-testid="stSidebar"] .stMarkdown, 
+[data-testid="stSidebar"] p, 
+[data-testid="stSidebar"] h1, 
+[data-testid="stSidebar"] h2, 
+[data-testid="stSidebar"] h3,
+[data-testid="stSidebar"] span {
+    color: #F1F5F9 !important;
+}
+
+.sidebar-status-box {
+    background-color: #1E293B;
+    border: 1px solid #334155;
+    border-radius: 6px;
+    padding: 12px;
+    margin-top: 15px;
+    font-size: 0.8rem;
+}
+
+.sidebar-status-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 6px;
+}
+
+.sidebar-status-item:last-child {
+    margin-bottom: 0;
+}
+
+.sidebar-footer {
+    position: fixed;
+    bottom: 15px;
+    left: 20px;
+    width: 250px;
+    font-size: 0.74rem;
+    color: #64748B;
+    border-top: 1px solid #1E293B;
+    padding-top: 10px;
+}
+
+/* Stepped Expandable visual pipeline */
+.pipeline-step-card {
+    background-color: #FFFFFF;
+    border: 1px solid #E2E8F0;
+    border-radius: 6px;
+    padding: 15px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+}
+
+.pipeline-step-num {
+    background-color: #0A2540;
+    color: #FFFFFF;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+}
+
+.pipeline-step-content {
+    flex-grow: 1;
+}
+
+.pipeline-step-name {
+    font-weight: 700;
+    color: #0A2540;
+    font-size: 0.92rem;
+}
+
+.pipeline-step-desc {
+    font-size: 0.8rem;
+    color: #64748B;
+}
+
+/* Timeline flowchart layout (for How it works) */
+.flowchart-container {
+    display: flex;
+    align-items: stretch;
+    justify-content: space-between;
+    gap: 10px;
+    margin: 20px 0;
+    overflow-x: auto;
+    padding-bottom: 10px;
+}
+
+.flowchart-node {
+    background-color: #FFFFFF;
+    border: 1px solid #E2E8F0;
+    border-radius: 6px;
+    padding: 12px 15px;
+    text-align: center;
+    flex: 1;
+    min-width: 140px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.flowchart-arrow {
+    display: flex;
+    align-items: center;
+    color: #94A3B8;
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.flowchart-title {
+    font-weight: 700;
+    font-size: 0.82rem;
+    color: #0A2540;
+    margin-bottom: 4px;
+}
+
+.flowchart-desc {
+    font-size: 0.72rem;
+    color: #64748B;
+}
+
+/* Summary table formatting */
+.summary-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.summary-table td {
+    padding: 8px 12px;
+    border-bottom: 1px solid #F1F5F9;
+    font-size: 0.88rem;
+}
+
+.summary-table td.label {
+    font-weight: 500;
+    color: #64748B;
+}
+
+.summary-table td.value {
+    font-weight: 600;
+    color: #0A2540;
+    text-align: right;
+}

@@ -1,0 +1,21 @@
+# Python / virtual env
+.venv/
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+
+# Scratch / lock files
+.*.lock
+.~lock*
+
+# Large scratch model files (regenerable, and >100MB rejected by GitHub)
+ipynb files/random_forestfinal_model.pkl
+ipynb files/random_forest_balanced_loan_default.pkl
+ipynb files/random_forest_loan_default.pkl
+
+# Duplicate model artifacts (.joblib is the runtime-preferred format)
+model/*.pkl
+
+# Regenerable cleaned datasets (train_model.py rebuilds these; app only reads raw CSV)
+data/
+ipynb files/Loan_default_cleaned.csv

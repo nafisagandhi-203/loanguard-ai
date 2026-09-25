@@ -1,0 +1,78 @@
+{
+    "logistic_regression": {
+        "model_key": "logistic_regression",
+        "name": "Logistic Regression",
+        "type": "Generalized Linear Model",
+        "description": "Fast and interpretable classification model based on log-odds.",
+        "accuracy": 0.8851184648521637,
+        "precision": 0.6066666666666667,
+        "recall": 0.030686224919912325,
+        "f1_score": 0.058417589471994866,
+        "roc_auc": 0.7497147059666488,
+        "cv_mean": 0.8851755240448934,
+        "cv_std": 0.0003461272951357091,
+        "confusion_matrix": {
+            "tn": 45021,
+            "fp": 118,
+            "fn": 5749,
+            "tp": 182
+        }
+    },
+    "random_forest": {
+        "model_key": "random_forest",
+        "name": "Random Forest",
+        "type": "Bagging Ensemble",
+        "description": "Ensemble of decision trees using bagging to reduce variance.",
+        "accuracy": 0.8854317603289602,
+        "precision": 0.7105263157894737,
+        "recall": 0.02276176024279211,
+        "f1_score": 0.04411043947067473,
+        "roc_auc": 0.7518755429495216,
+        "cv_mean": 0.8858,
+        "cv_std": 0.0006154266812545711,
+        "confusion_matrix": {
+            "tn": 45084,
+            "fp": 55,
+            "fn": 5796,
+            "tp": 135
+        }
+    },
+    "adaboost": {
+        "model_key": "adaboost",
+        "name": "AdaBoost",
+        "type": "Boosting Ensemble",
+        "description": "Sequential boosting model that focuses on difficult observations.",
+        "accuracy": 0.8853925983943607,
+        "precision": 0.6477272727272727,
+        "recall": 0.028831562974203338,
+        "f1_score": 0.05520581113801453,
+        "roc_auc": 0.752752560050661,
+        "cv_mean": 0.8855084042034065,
+        "cv_std": 0.00030463714303786683,
+        "confusion_matrix": {
+            "tn": 45046,
+            "fp": 93,
+            "fn": 5760,
+            "tp": 171
+        }
+    },
+    "gradient_boosting": {
+        "model_key": "gradient_boosting",
+        "name": "Gradient Boosting",
+        "type": "Boosting Ensemble",
+        "description": "Sequential ensemble model that improves predictions through boosting.",
+        "accuracy": 0.886273741922851,
+        "precision": 0.6289308176100629,
+        "recall": 0.05058168942842691,
+        "f1_score": 0.09363295880149813,
+        "roc_auc": 0.7570968005535975,
+        "cv_mean": 0.8861252146184011,
+        "cv_std": 0.00028011300577341887,
+        "confusion_matrix": {
+            "tn": 44962,
+            "fp": 177,
+            "fn": 5631,
+            "tp": 300
+        }
+    }
+}

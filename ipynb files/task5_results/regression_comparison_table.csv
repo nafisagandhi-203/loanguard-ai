@@ -1,0 +1,7 @@
+Model,RSS,RMSE,R²,Train R²,Test R²,Fit Status,5-Fold CV Mean,5-Fold CV Spread (Std),_raw_r2_test,_raw_rmse,_raw_cv_mean
+Simple Linear Regression (Income only),"50,987.34",0.9992,-0.0000,0.0000,-0.0000,Underfitting (Both scores very low),-0.0000,0.0000,-3.1205242616572093e-06,0.9991904034357448,-4.8972304727223914e-05
+"Multiple Linear Regression (Income, CreditScore, Age)","50,986.51",0.9992,0.0000,0.0000,0.0000,Underfitting (Both scores very low),-0.0001,0.0000,1.3280836029250231e-05,0.999182209386813,-7.266858267667154e-05
+Full Multiple Linear Regression (All Features),"50,988.41",0.9992,-0.0000,0.0001,-0.0000,Underfitting (Both scores very low),-0.0002,0.0001,-2.4115827479409546e-05,0.9992008925007045,-0.0002128730499580289
+Random Forest Regressor (Advanced - Bagging),"51,023.41",0.9995,-0.0007,0.0211,-0.0007,Underfitting (Both scores very low),-0.0041,0.0019,-0.000710592033940749,0.9995437892130421,-0.004067048484281743
+AdaBoost Regressor (Advanced - Boosting),"50,988.98",0.9992,-0.0000,0.0001,-0.0000,Underfitting (Both scores very low),-0.0001,0.0001,-3.520773697740509e-05,0.9992064338746386,-7.983254393348905e-05
+Gradient Boosting Regressor (Advanced - Boosting),"51,006.52",0.9994,-0.0004,0.0020,-0.0004,Underfitting (Both scores very low),-0.0003,0.0001,-0.00037921383130590236,0.9993782795979889,-0.0002586728472857569
