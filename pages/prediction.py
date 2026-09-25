@@ -575,40 +575,38 @@ if st.session_state.base_probability is not None:
                 else "No material change"
             )
             
-        st.markdown(
-            f"""
-            <div style="background-color: #0B192C; color: #FFFFFF; border-radius: 8px; padding: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); text-align: center; height: 350px; display: flex; flex-direction: column; justify-content: center; border: 1px solid #1E293B;">
-                <div style="font-size: 0.85rem; font-weight: 700; color: #94A3B8; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 10px;">
-                    Risk Simulation ({active_model_name})
-                </div>
-                
-                <div style="font-size: 0.8rem; color: #64748B; margin-bottom: 5px;">BASE LINE RISK</div>
-                <div style="font-size: 1.5rem; font-weight: 700; color: #94A3B8; margin-bottom: 20px;">{base_prob_pct:.1f}%</div>
-                
-                <div style="font-size: 0.8rem; color: #64748B; margin-bottom: 5px;">SIMULATED RISK</div>
-                <div style="font-size: 3.25rem; font-weight: 800; color: {risk_color if abs(prob_diff) < 0.1 else ('#10B981' if prob_diff < 0 else '#EF4444')}; line-height: 1; margin-bottom: 5px;">
-                    {sim_prob_pct:.1f}%
-                </div>
-                <div style="font-size: 0.85rem; font-weight: 700; color: #FFFFFF; margin-bottom: 15px;">
-                    {"LIKELY DEFAULT (1)" if sim_prob_pct > 50 else "UNLIKELY DEFAULT (0)"}
-                </div>
-                
-                <div style="border-top: 1px solid #1E293B; padding-top: 12px; margin-bottom: 10px;">
-                    <div style="font-size: 0.7rem; color: #64748B; letter-spacing: 0.03em; margin-bottom: 4px;">ACTIVE LEVERS</div>
-                    <div style="font-size: 0.72rem; color: #94A3B8; line-height: 1.45;">
-                        Credit {sim_credit} · DTI {sim_dti:.2f} · Rate {sim_rate:.1f}%<br>
-                        Income ${sim_income:,.0f} · Loan ${sim_loan:,.0f}
-                    </div>
-                </div>
-                
-                <div style="border-top: 1px solid #1E293B; padding-top: 15px;">
-                    <div style="font-size: 0.76rem; color: #64748B; margin-bottom: 4px;">RISK DELTA</div>
-                    <div style="font-size: 0.88rem; font-weight: 800; color: {diff_color};">{diff_text}</div>
-                </div>
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
+        st.html(f"""
+<div style="background-color: #0B192C; color: #FFFFFF; border-radius: 8px; padding: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); text-align: center; height: 350px; display: flex; flex-direction: column; justify-content: center; border: 1px solid #1E293B;">
+
+    <div style="font-size: 0.85rem; font-weight: 700; color: #94A3B8; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 10px;">
+        Risk Simulation ({active_model_name})
+    </div>
+
+    <div style="font-size: 0.8rem; color: #64748B; margin-bottom: 5px;">BASE LINE RISK</div>
+    <div style="font-size: 1.5rem; font-weight: 700; color: #94A3B8; margin-bottom: 20px;">{base_prob_pct:.1f}%</div>
+
+    <div style="font-size: 0.8rem; color: #64748B; margin-bottom: 5px;">SIMULATED RISK</div>
+    <div style="font-size: 3.25rem; font-weight: 800; color: {risk_color if abs(prob_diff) < 0.1 else ('#10B981' if prob_diff < 0 else '#EF4444')}; line-height: 1; margin-bottom: 5px;">
+        {sim_prob_pct:.1f}%
+    </div>
+    <div style="font-size: 0.85rem; font-weight: 700; color: #FFFFFF; margin-bottom: 15px;">
+        {"LIKELY DEFAULT (1)" if sim_prob_pct > 50 else "UNLIKELY DEFAULT (0)"}
+    </div>
+
+    <div style="border-top: 1px solid #1E293B; padding-top: 12px; margin-bottom: 10px;">
+        <div style="font-size: 0.7rem; color: #64748B; letter-spacing: 0.03em; margin-bottom: 4px;">ACTIVE LEVERS</div>
+        <div style="font-size: 0.72rem; color: #94A3B8; line-height: 1.45;">
+            Credit {sim_credit} · DTI {sim_dti:.2f} · Rate {sim_rate:.1f}%<br>
+            Income ${sim_income:,.0f} · Loan ${sim_loan:,.0f}
+        </div>
+    </div>
+
+    <div style="border-top: 1px solid #1E293B; padding-top: 15px;">
+        <div style="font-size: 0.76rem; color: #64748B; margin-bottom: 4px;">RISK DELTA</div>
+        <div style="font-size: 0.88rem; font-weight: 800; color: {diff_color};">{diff_text}</div>
+    </div>
+</div>
+""")
 
 else:
     # Empty State display
